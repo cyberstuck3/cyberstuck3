@@ -55,6 +55,25 @@ TypeScript, daisy for CSS.
   language is a visible seedling rather than nothing. The floor is stated in the
   README and the real figure is printed under every flower.
 
+## Known limits
+
+**`prefers-reduced-motion` inside the SVG does not work where this ships.**
+Chromium does not evaluate user-preference media queries inside an SVG loaded
+through `<img>`, which is exactly how GitHub renders it. The in-file
+`@media (prefers-reduced-motion: reduce)` block is kept because it works when
+the file is opened directly, but it cannot be relied on. A static variant of
+each theme is generated and selected by the host page's `<picture>`, which does
+see the preference. Verified across all four combinations of colour scheme and
+motion preference.
+
+**No layout-shift reservation on the hero image.** GitHub's markdown CSS is
+`max-width: 100%` with no `height: auto`, so an `<img>` carrying both `width`
+and `height` is squashed on a phone: measured 1.17 instead of 3.27 at 390px.
+Keeping the aspect ratio means dropping the `height` attribute, which costs the
+pre-load height reservation that R-40 asks for. A permanently distorted image
+for every mobile reader is the worse failure, so the ratio wins. Mitigated by
+run-length encoding the artwork: 43% fewer nodes, 37% smaller files.
+
 ## Identity motif
 
 The pot. Every language sits in the same terracotta pot on the same soil line,
@@ -72,3 +91,5 @@ it is. That is the whole argument of the piece in one repeated shape.
 - **Why the panel is transparent rather than white:** white blends in GitHub's light theme and glares in its dark one; transparent blends in both.
 - **Why the daisy gained a dark outline:** on a white canvas a white flower disappears, and it was the only sprite of the five without an edge, so the outline fixes an art inconsistency and a visibility failure at once.
 - **Why every flower is centred on its pot axis:** the scaled sprite was previously translated to the pot's left edge, so anything below full size drifted left; centring makes height the only variable the eye reads.
+- **Why four SVG files instead of one:** the host page is the only place that can read colour-scheme and motion preferences, so each combination needs its own file for `<picture>` to choose between.
+- **Why the static variant drops the drifting petals:** a petal frozen mid-air is a stray square; the ones that read as wind only read that way while moving.

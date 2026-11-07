@@ -80,12 +80,22 @@ SPRITE_W = 13 * CELL
 
 
 def rects(grid, oy=0):
+    """Run-length encode each row: adjacent cells of one colour become a single
+    wider rect. Same picture, roughly a third of the nodes, so the SVG lands
+    faster and the layout settles sooner."""
     out = []
     for r, row in enumerate(grid):
-        for c, ch in enumerate(row):
-            col = PAL.get(ch)
-            if col:
-                out.append(f'<rect x="{c*CELL}" y="{oy+r*CELL}" width="{CELL}" height="{CELL}" fill="{col}"/>')
+        c = 0
+        while c < len(row):
+            col = PAL.get(row[c])
+            if not col:
+                c += 1
+                continue
+            run = 1
+            while c + run < len(row) and PAL.get(row[c + run]) == col:
+                run += 1
+            out.append(f'<rect x="{c*CELL}" y="{oy+r*CELL}" width="{run*CELL}" height="{CELL}" fill="{col}"/>')
+            c += run
     return "".join(out)
 
 
@@ -95,7 +105,11 @@ def scale_for(pct):
     return round(max(0.30, 0.30 + 0.70 * (pct / 41.4)), 3)
 
 
-def build(theme):
+def build(theme, animated=True):
+    """A media query inside an SVG loaded through <img> is not evaluated against
+    the user's settings in Chromium, so the in-file prefers-reduced-motion block
+    cannot be relied on where this actually ships. A static variant is emitted
+    and selected by the host page instead, which does see the preference."""
     T = THEMES[theme]
     parts, css = [], []
 
@@ -145,8 +159,8 @@ def build(theme):
         css.append(f"@keyframes gs{k}{{0%,100%{{transform:rotate(-1.6deg)}}50%{{transform:rotate(1.6deg)}}}}"
                    f".g{k}{{animation:gs{k} {round(5.5+k*0.8,2)}s ease-in-out infinite;animation-delay:-{round(k*1.1,2)}s}}")
 
-    petals, SEEDS = [], [(60,38,'#ffb8d0',15,0),(430,22,'#f7a736',18,-6),
-                         (760,54,'#ffe066',16,-12),(180,86,'#e8503f',19,-3)]
+    petals, SEEDS = [], ([(60,38,'#ffb8d0',15,0),(430,22,'#f7a736',18,-6),
+                          (760,54,'#ffe066',16,-12),(180,86,'#e8503f',19,-3)] if animated else [])
     for i,(x,y,col,dur,delay) in enumerate(SEEDS):
         petals.append(f'<rect class="d{i}" x="{x}" y="{y}" width="6" height="6" rx="1" fill="{col}" opacity=".8"/>')
         css.append(
@@ -166,7 +180,7 @@ def build(theme):
 text{{font-family:"Courier New",ui-monospace,monospace;text-anchor:middle}}
 .lbl{{fill:{T['label']};font-size:16px;font-weight:700;letter-spacing:.3px}}
 .pct{{fill:{T['pct']};font-size:13px}}
-{" ".join(css)}
+{" ".join(css) if animated else ""}
 @media (prefers-reduced-motion:reduce){{*{{animation:none!important}}}}
 </style>
 {"".join(petals)}
@@ -181,10 +195,11 @@ if __name__ == "__main__":
     out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets")
     out = os.environ.get("GARDEN_OUT", "/Users/aifamaladinaulya/Documents/qa-portfolio/profile-readme/assets")
     for theme in THEMES:
-        path = os.path.join(out, f"garden-{theme}.svg")
-        svg = build(theme)
-        open(path, "w").write(svg)
-        print(f"  {path}  ({len(svg)} bytes)")
+        for animated, suffix in ((True, ""), (False, "-static")):
+            name = f"garden-{theme}{suffix}.svg"
+            svg = build(theme, animated)
+            open(os.path.join(out, name), "w").write(svg)
+            print(f"  {name:28s} {len(svg):>6} bytes  animasi={'ya' if animated else 'tidak'}")
     print()
     for label, byts, _ in LANGS:
         pct = 100 * byts / TOTAL

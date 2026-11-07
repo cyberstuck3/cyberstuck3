@@ -1,9 +1,11 @@
 <p align="center">
   <picture>
+    <source media="(prefers-color-scheme: dark) and (prefers-reduced-motion: reduce)" srcset="assets/garden-dark-static.svg">
+    <source media="(prefers-reduced-motion: reduce)" srcset="assets/garden-light-static.svg">
     <source media="(prefers-color-scheme: dark)" srcset="assets/garden-dark.svg">
     <img src="assets/garden-light.svg"
          alt="A pixel-art garden in a breeze. Five potted flowers share one soil line; each is a language in these repositories, drawn at a height proportional to its share of bytes. Python 41.4 percent as a red rose, HTML 32.8 percent as an orange bougainvillea, Jupyter Notebook 13.7 percent as a sunflower, TypeScript 12.2 percent as a pink sakura, CSS under one percent as a daisy seedling."
-         width="1040" height="318" fetchpriority="high">
+         width="1040" fetchpriority="high">
   </picture>
 </p>
 
