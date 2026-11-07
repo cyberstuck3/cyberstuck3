@@ -21,8 +21,12 @@ TOTAL = sum(b for _, b, _ in LANGS)
 # Only the text, soil line and grass change between themes. Flower and pot
 # hues are the encoding: they identify a language and must stay constant.
 THEMES = {
-    "light": {"label": "#1f2328", "pct": "#59636e", "soil": "#3f7d33", "grass": "#4a8b3a"},
-    "dark":  {"label": "#e6edf3", "pct": "#8b949e", "soil": "#2f6b29", "grass": "#3f8c36"},
+    "light": {"label": "#1f2328", "pct": "#59636e", "soil": "#3f7d33", "grass": "#4a8b3a",
+              # Petals take the darker end of each flower ramp on a light canvas;
+              # the light tints measured 1.3 to 2.0 against white and vanished.
+              "petals": ["#bf4f7d", "#e2701a", "#a86a12", "#a8302a"]},
+    "dark":  {"label": "#e6edf3", "pct": "#8b949e", "soil": "#2f6b29", "grass": "#3f8c36",
+              "petals": ["#ffb8d0", "#f7a736", "#ffe066", "#d8443a"]},
 }
 
 PAL = {
@@ -31,8 +35,8 @@ PAL = {
     'p': '#8f4b26', 'P': '#c07442', 'o': '#7a3d1e', 'O': '#a85c30',
     'r': '#a8302a', 'R': '#d8443a', 'S': '#f26a58', 'h': '#7d1f1a',
     'b': '#e2701a', 'B': '#f7a736', 'k': '#9c3f08', 'w': '#ffe6ee',
-    'y': '#f0c419', 'Y': '#ffe066', 'c': '#6b3f10', 'C': '#96601a',
-    'q': '#ef7fa6', 'Q': '#ffb8d0', 'e': '#f5c542',
+    'y': '#f0c419', 'Y': '#ffe066', 'c': '#6b3f10', 'C': '#96601a', 'a': '#a86a12',
+    'q': '#ef7fa6', 'Q': '#ffb8d0', 'e': '#f5c542', 'z': '#bf4f7d',
     'n': '#6b7a82', 'D': '#ffffff',
 }
 
@@ -69,14 +73,31 @@ HEADS = {
     "..kbbk.kbbk..", "......k......",
 ],
 "sunflower": [
-    "....y.y.y....", "...yYyYyYy...", "..yYycccyYy..", ".yYycCCCcyYy.",
-    "yYyccCCCccyYy", "yYycCCCCCcyYy", "yYyccCCCccyYy", ".yYycCCCcyYy.",
-    "..yYycccyYy..", "...yYyYyYy...", "....y.y.y....",
+    # Ray tips are the silhouette, so they carry the outline tone. Plain yellow
+    # edges measured 1.66:1 against a white canvas and dissolved into it.
+    "....a.a.a....",
+    "...aYaYaYa...",
+    "..aYycccyYa..",
+    ".aYycCCCcyYa.",
+    "aYyccCCCccyYa",
+    "aYycCCCCCcyYa",
+    "aYyccCCCccyYa",
+    ".aYycCCCcyYa.",
+    "..aYycccyYa..",
+    "...aYaYaYa...",
+    "....a.a.a....",
 ],
 "sakura": [
-    "....q.q.q....", "..qqQwQwQqq..", ".qQwwwwwwwQq.", ".qQwwweewwQq.",
-    "qQwwweeewwwQq", ".qQwwweewwQq.", ".qQwwwwwwwQq.", "..qqQwQwQqq..",
-    "....q.q.q....",
+    # Outer petal edge carries the outline tone for the same reason.
+    "....z.z.z....",
+    "..zzQwQwQzz..",
+    ".zQwwwwwwwQz.",
+    ".zQwwweewwQz.",
+    "zQwwweeewwwQz",
+    ".zQwwweewwQz.",
+    ".zQwwwwwwwQz.",
+    "..zzQwQwQzz..",
+    "....z.z.z....",
 ],
 "daisy": [
     ".....n.n.....", "..n.nDDDn.n..", "...nDDDDDn...", "..nDDeeeDDn..",
@@ -171,8 +192,9 @@ def build(theme, animated=True):
         css.append(f"@keyframes gs{k}{{0%,100%{{transform:rotate(-1.6deg)}}50%{{transform:rotate(1.6deg)}}}}"
                    f".g{k}{{animation:gs{k} {round(5.5+k*0.8,2)}s ease-in-out infinite;animation-delay:-{round(k*1.1,2)}s}}")
 
-    petals, SEEDS = [], ([(60,38,'#ffb8d0',15,0),(430,22,'#f7a736',18,-6),
-                          (760,54,'#ffe066',16,-12),(180,86,'#e8503f',19,-3)] if animated else [])
+    _P = T["petals"]
+    petals, SEEDS = [], ([(60,38,_P[0],15,0),(430,22,_P[1],18,-6),
+                          (760,54,_P[2],16,-12),(180,86,_P[3],19,-3)] if animated else [])
     for i,(x,y,col,dur,delay) in enumerate(SEEDS):
         petals.append(f'<rect class="d{i}" x="{x}" y="{y}" width="6" height="6" rx="1" fill="{col}" opacity=".8"/>')
         css.append(

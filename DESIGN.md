@@ -55,6 +55,18 @@ TypeScript, daisy for CSS.
   language is a visible seedling rather than nothing. The floor is stated in the
   README and the real figure is printed under every flower.
 
+## Perceivability rule for the sprites
+
+A flower counts as perceivable on a canvas when **either** its outline **or**
+its body clears 3:1 against that canvas. On white the dark outline carries the
+silhouette, because the bloom's body is bright. On GitHub's dark canvas the
+bright body carries it, and the outline merging into the background is fine.
+Testing the outline alone reports false failures on dark; testing the body
+alone reports false failures on light.
+
+Measured for all five on both canvases: lowest margin is the bougainvillea at
+3.20:1 via its mid tone on white, everything else is above 4:1.
+
 ## Known limits
 
 **`prefers-reduced-motion` inside the SVG does not work where this ships.**
@@ -93,3 +105,5 @@ it is. That is the whole argument of the piece in one repeated shape.
 - **Why every flower is centred on its pot axis:** the scaled sprite was previously translated to the pot's left edge, so anything below full size drifted left; centring makes height the only variable the eye reads.
 - **Why four SVG files instead of one:** the host page is the only place that can read colour-scheme and motion preferences, so each combination needs its own file for `<picture>` to choose between.
 - **Why the static variant drops the drifting petals:** a petal frozen mid-air is a stray square; the ones that read as wind only read that way while moving.
+- **Why the drifting petals are theme-aware:** fixed tints measured 1.3 to 2.0 against white, so three of the four were invisible in light mode; each theme now takes the end of the ramp that its canvas can show.
+- **Why the sunflower and sakura gained outlines:** their edges measured 1.66:1 and 2.54:1 on white, below the 3:1 graphics threshold, so their silhouettes dissolved into a light page.
