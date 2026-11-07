@@ -1,7 +1,10 @@
 <p align="center">
-  <img src="assets/garden.svg"
-       alt="A pixel-art garden in a night breeze. Five potted flowers on one soil line, each a language used in these repositories, drawn at a height proportional to its share of bytes: Python 41.4 percent as a red rose, HTML 32.8 percent as an orange bougainvillea, Jupyter Notebook 13.7 percent as a sunflower, TypeScript 12.2 percent as a pink sakura, CSS under one percent as a daisy seedling."
-       width="1040" height="322" fetchpriority="high">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/garden-dark.svg">
+    <img src="assets/garden-light.svg"
+         alt="A pixel-art garden in a breeze. Five potted flowers share one soil line; each is a language in these repositories, drawn at a height proportional to its share of bytes. Python 41.4 percent as a red rose, HTML 32.8 percent as an orange bougainvillea, Jupyter Notebook 13.7 percent as a sunflower, TypeScript 12.2 percent as a pink sakura, CSS under one percent as a daisy seedling."
+         width="1040" height="318" fetchpriority="high">
+  </picture>
 </p>
 
 ### Aifa Maladina Ulya
