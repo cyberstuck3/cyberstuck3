@@ -29,7 +29,7 @@ PAL = {
     '.': None,
     's': '#4a8b3a', 'L': '#357a2c', 'M': '#52a541',
     'p': '#8f4b26', 'P': '#c07442', 'o': '#7a3d1e', 'O': '#a85c30',
-    'r': '#c0392b', 'R': '#e8503f', 'h': '#7d1f1a',
+    'r': '#a8302a', 'R': '#d8443a', 'S': '#f26a58', 'h': '#7d1f1a',
     'b': '#e2701a', 'B': '#f7a736', 'k': '#9c3f08', 'w': '#ffe6ee',
     'y': '#f0c419', 'Y': '#ffe066', 'c': '#6b3f10', 'C': '#96601a',
     'q': '#ef7fa6', 'Q': '#ffb8d0', 'e': '#f5c542',
@@ -47,9 +47,21 @@ STEM = [
 ]
 HEADS = {
 "rose": [
-    "....hhhhh....", "..hhrrrrrhh..", ".hrrRRRRRrrh.", ".hrRRrrrRRrh.",
-    "hrRRrRRRrRRrh", "hrRrRRhRRrRrh", "hrRRrRRRrRRrh", ".hrRRrrrRRrh.",
-    ".hrrRRRRRrrh.", "..hhrrrrrhh..", "....hhhhh....",
+    # Petal divisions are drawn in the SHADOW tone, never the outline tone.
+    # Hard dark marks inside a light field read as eyes, a mouth, or a maze;
+    # mid-dark marks read as form. The furl sits off-centre, and the highlight
+    # runs down the upper left so the bloom has a light direction.
+    "....hhhhh....",
+    "..hhSSSSShh..",
+    ".hSSSSSSSSrh.",
+    ".hSSrrrrSRrh.",
+    "hSSrRRRRrRRrh",
+    "hSSrRrrRrRRrh",
+    "hSSrRRRrrRRrh",
+    ".hSSrrrrRRrh.",
+    ".hSSSSRRRRrh.",
+    "..hhrrrrrhh..",
+    "....hhhhh....",
 ],
 "bougainvillea": [
     "....kbbbk....", "...kbBBBbk...", "...kbBwBbk...", "..kbbBBBbbk..",
