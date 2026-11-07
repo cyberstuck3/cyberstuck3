@@ -1,12 +1,14 @@
 <p align="center">
-  <img src="assets/garden.svg" alt="A pixel-art garden in a night breeze. Each flower is a language used in these repositories, drawn at a height proportional to its share of bytes: Python 41.4 percent, HTML 32.8 percent, Jupyter Notebook 13.7 percent, TypeScript 12.2 percent, CSS under one percent." width="100%">
+  <img src="assets/garden.svg"
+       alt="A pixel-art garden in a night breeze. Five potted flowers on one soil line, each a language used in these repositories, drawn at a height proportional to its share of bytes: Python 41.4 percent as a red rose, HTML 32.8 percent as an orange bougainvillea, Jupyter Notebook 13.7 percent as a sunflower, TypeScript 12.2 percent as a pink sakura, CSS under one percent as a daisy seedling."
+       width="1040" height="322" fetchpriority="high">
 </p>
 
 ### Aifa Maladina Ulya
 
 Mathematics undergraduate at Universitas Negeri Yogyakarta. I test software and
-I model systems, and the two turn out to be the same habit: write down what the
-thing is supposed to do, then go and find out whether it does.
+I model systems. Both start by writing down what the thing is supposed to do,
+then going to find out whether it does.
 
 ---
 
